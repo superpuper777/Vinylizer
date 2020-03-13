@@ -1,0 +1,4 @@
+# игнорирую все txt
+*.txt
+/images/*
+/audio/*
