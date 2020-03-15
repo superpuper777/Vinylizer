@@ -1,8 +1,9 @@
 const button = document.getElementById('button');
 const vinylRecord = document.getElementById('vinylRecord');
-const tonearm = document.getElementById('tonearm');
+let tonearm = document.getElementById('tonearm');
 const audio = document.getElementById('song');
 const music = document.querySelector('.music');
+const span = document.querySelector('span');
 const trackList = [{
         src: "/audio/Adventure Club - Save Me.mp3",
         name: "Adventure Club - Save Me"
@@ -18,13 +19,12 @@ const trackList = [{
 ];
 
 const play = () => {
-    // let audioDuration = audio.duration + "s";
-    // let currentTime = audio.currentTime + "s"
     tonearm.style.animation = "tonearm 50s linear infinite";
     vinylRecord.style.animation = "vinylRecord 2s linear infinite";
     audio.play();
-    // console.log(audioDuration);
-    // console.log(currentTime);
+    setInterval(function () {
+        trackTime(audio.currentTime);
+    }, 100);
 };
 
 const pause = () => {
@@ -34,13 +34,8 @@ const pause = () => {
 
 var isMusicPlay = false;
 button.addEventListener("click", function () {
-    if (isMusicPlay) {
-        pause();
-        isMusicPlay = false;
-    } else {
-        play();
-        isMusicPlay = true;
-    }
+    isMusicPlay ? pause() : play();
+    isMusicPlay = !isMusicPlay;
 });
 
 audio.addEventListener("ended", function () {
@@ -70,10 +65,25 @@ const list = trackList.map((track, index) => {
         list.map(track => {
             track.classList.remove("active-track");
             trackIndex = index;
+            console.log("change track");
         });
         li.className = "active-track";
         audio.src = track.src;
         play();
+        newTonearm = tonearm.cloneNode(true);
+        tonearm.parentNode.replaceChild(newTonearm, tonearm);
+        tonearm = newTonearm;
+
     });
     return li;
 });
+
+function trackTime(currentTime) {
+    var minutes = Math.floor((currentTime / 60)),
+        seconds = (currentTime % 60).toFixed(2);
+
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+    span.textContent = minutes + ":" + seconds;
+}

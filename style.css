@@ -62,7 +62,6 @@ body {
   font-family: fantasy;
 }
 
-
 ul li {
   list-style-type: none;
   margin-top: 10px;
@@ -76,6 +75,16 @@ ul li {
   float: left;
   height: 20px;
   width: 20px;
+}
+#trackTime {
+  position: relative;
+  right: 130px;
+  top: 950px;
+  width: 80px;
+  height: 20px;
+  padding: 5px;
+  font-family: fantasy;
+  font-size: large;
 }
 
 @keyframes tonearm {
