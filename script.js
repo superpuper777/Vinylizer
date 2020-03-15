@@ -19,12 +19,10 @@ const trackList = [{
 ];
 
 const play = () => {
-    tonearm.style.animation = "tonearm 50s linear infinite";
+    tonearm.style.animation = `tonearm ${audio.duration}s linear forwards`;
     vinylRecord.style.animation = "vinylRecord 2s linear infinite";
+    audio.ontimeupdate = trackTime;
     audio.play();
-    setInterval(function () {
-        trackTime(audio.currentTime);
-    }, 100);
 };
 
 const pause = () => {
@@ -69,21 +67,21 @@ const list = trackList.map((track, index) => {
         });
         li.className = "active-track";
         audio.src = track.src;
-        play();
+        if (button.checked) {
+            play();
+        }
         newTonearm = tonearm.cloneNode(true);
         tonearm.parentNode.replaceChild(newTonearm, tonearm);
         tonearm = newTonearm;
-
     });
     return li;
 });
 
-function trackTime(currentTime) {
+function trackTime() {
+    const currentTime = audio.currentTime;
     var minutes = Math.floor((currentTime / 60)),
         seconds = (currentTime % 60).toFixed(2);
-
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     seconds = (seconds < 10) ? "0" + seconds : seconds;
-
     span.textContent = minutes + ":" + seconds;
 }
